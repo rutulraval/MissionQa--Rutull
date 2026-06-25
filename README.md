@@ -19,20 +19,20 @@ Good luck!
 - This is a Maven based framework
 - `pom.xml` should have everything you need to create and run the tests. Please add further dependencies if you require it.
 
-The following folder `src/test/java/AutomationTest/mission` contains the following class:
+The following folders contain the core test orchestration classes:
 
-- `Hook` - this is the before and after. This launches and kills the browser.
-- `RunnerTest` - contains the CucumberOptions which runs the BDD's
+- `src/test/java/hooks/Hook.java` - before/after hooks used to initialize and close browser sessions for `@ui` scenarios.
+- `src/test/java/runner/RunnerTest.java` - contains `CucumberOptions` to run the BDD scenarios.
 
-The following folder `src/main/java/AutomationTest/mission` contains the following class:
+The following folder contains browser setup logic:
 
-- `BrowserSetup` - This contains the setup of a given browser based on what is set to Browser property within `TestData.properties` 
+- `src/main/java/driver/BrowserSetup.java` - browser initialization based on `Browser` property from `TestData.properties`.
 
  
 ## Steps to execute this project
 
 - Pre-requisites
-    - JAVA SDK 1.8 or higher
+    - JAVA SDK 11 or higher
     - Maven CLI
     
 - Steps
@@ -40,6 +40,6 @@ The following folder `src/main/java/AutomationTest/mission` contains the followi
     - Got o command line or any IDE that supports JAVA & Maven dependencies
     - We may need to import the Maven dependencies (Scope got set to Compile for Newly added dependencies in pom.xml)
     - Execute the command: `mvn clean test`
-    - Alternatively, we can run `testng.xml` from IDE after downloading the dependencies
+    - Alternatively, run `runner.RunnerTest` from IDE after downloading dependencies
     - Result will be captured in `test-output` folder
 

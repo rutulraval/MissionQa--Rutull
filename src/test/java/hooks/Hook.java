@@ -41,14 +41,16 @@ public class Hook extends BasePage {
             return;
         }
 
-        String screenShotFilename = scenario.getName().replace(" ", "")
-                + new Timestamp(new Date().getTime()).toString().replaceAll("[^a-zA-Z0-9]", "")
-                + "_" + LoadProp.getProperty("Browser") + ".jpg";
-        try {
-            File scrFile = ((TakesScreenshot) BasePage.getDriver()).getScreenshotAs(OutputType.FILE);
-            FileUtils.copyFile(scrFile, new File(LoadProp.getProperty("ScreenshotLocation") + screenShotFilename));
-        } catch (IOException e) {
-            throw new IllegalStateException("Unable to capture screenshot for scenario: " + scenario.getName(), e);
+        if (scenario.isFailed()) {
+            String screenShotFilename = scenario.getName().replace(" ", "")
+                    + new Timestamp(new Date().getTime()).toString().replaceAll("[^a-zA-Z0-9]", "")
+                    + "_" + LoadProp.getProperty("Browser") + ".jpg";
+            try {
+                File scrFile = ((TakesScreenshot) BasePage.getDriver()).getScreenshotAs(OutputType.FILE);
+                FileUtils.copyFile(scrFile, new File(LoadProp.getProperty("ScreenshotLocation") + screenShotFilename));
+            } catch (IOException e) {
+                throw new IllegalStateException("Unable to capture screenshot for scenario: " + scenario.getName(), e);
+            }
         }
 
         // Attempt clean shutdown of the browser session

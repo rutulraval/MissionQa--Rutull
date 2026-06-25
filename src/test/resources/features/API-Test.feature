@@ -2,16 +2,15 @@
 Feature: API test
 # Please visit https://reqres.in/
 
-  Background:
-    Given I open the API endpoint
-
   Scenario: Should see LIST USERS of all existing users
+    Given I open the API endpoint
     Given I get the default list of users for page 1
     When I get the list of all users within every page
     Then I should see total users count equals the number of user ids
 
 
   Scenario: Should see SINGLE USER data
+    Given I open the API endpoint
     Given I make a search for user 3
     Then I should see the following user data
       | first_name | email               |
@@ -19,11 +18,13 @@ Feature: API test
 
 
   Scenario: Should see SINGLE USER NOT FOUND error code
+    Given I open the API endpoint
     Given I make a search for user 55
     Then I receive error code 404 in response
 
 
   Scenario Outline: CREATE a user
+    Given I open the API endpoint
     Given I create a user with following <Name> <Job>
     Then response should contain the following data
       | name | job | id | createdAt |
@@ -35,12 +36,14 @@ Feature: API test
 
 
   Scenario: LOGIN - SUCCESSFUL by a user
+    Given I open the API endpoint
     Given I login successfully with the following data
       | Email              | Password   |
       | eve.holt@reqres.in | cityslicka |
     Then I should get a response code of 200
 
   Scenario: LOGIN - UNSUCCESSFUL by a user
+    Given I open the API endpoint
     Given I login unsuccessfully with the following data
       | Email              | Password |
       | eve.holt@reqres.in |          |
@@ -49,5 +52,6 @@ Feature: API test
       | "error": "Missing password" |
 
   Scenario: Should see the list of users with DELAYED RESPONSE
+    Given I open the API endpoint
     Given I wait for the user list to load
     Then I should see that every user has a unique id

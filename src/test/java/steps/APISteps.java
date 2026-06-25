@@ -14,6 +14,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class APISteps {
@@ -163,14 +165,24 @@ public class APISteps {
 
     @And("I should see the following response message:")
     public void iShouldSeeTheFollowingResponseMessage(DataTable dt) {
-        String expectedMessage = dt.asList().get(0).trim()
-                .replace("|", "")
-                .replace("\"", "")
-                .trim();
+        List<List<String>> rows = dt.asLists(String.class);
+        if (rows.size() == 1 && rows.get(0).size() == 1) {
+            Matcher matcher = Pattern.compile("\\\"([^\\\"]+)\\\"\\s*:\\s*\\\"([^\\\"]+)\\\"")
+                    .matcher(rows.get(0).get(0));
+            Assert.assertTrue(matcher.find(), "Expected message format should be \"field\": \"value\"");
+            Assert.assertEquals(
+                    response.jsonPath().getString(matcher.group(1)),
+                    matcher.group(2),
+                    "Expected response message does not match actual.");
+            return;
+        }
 
-        Assert.assertEquals(
-                response.jsonPath().getString("error"),
-                expectedMessage.split(":")[1].trim(),
-                "Expected response message does not match actual.");
+        Map<String, String> expected = dt.asMaps(String.class, String.class).get(0);
+        for (Map.Entry<String, String> entry : expected.entrySet()) {
+            Assert.assertEquals(
+                    response.jsonPath().getString(entry.getKey()),
+                    entry.getValue(),
+                    "Expected response field does not match actual for key: " + entry.getKey());
+        }
     }
 }

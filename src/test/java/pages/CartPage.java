@@ -46,8 +46,13 @@ public class CartPage {
                 .collect(Collectors.toList());
     }
 
-    public void removeItemById(String removeButtonId) {
-        driver.findElement(By.id(removeButtonId)).click();
+    public void removeItemsByDisplayNames(List<String> itemNames) {
+        for (String itemName : itemNames) {
+            String removeButtonXPath = String.format(
+                    "//div[@class='cart_item'][.//div[@data-test='inventory-item-name' and normalize-space()='%s']]//button[contains(@id,'remove')]",
+                    itemName);
+            driver.findElement(By.xpath(removeButtonXPath)).click();
+        }
     }
 
     public CheckoutPage clickCheckout() {

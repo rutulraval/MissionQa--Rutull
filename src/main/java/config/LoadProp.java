@@ -1,28 +1,24 @@
 package config;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 
 public class LoadProp {
 
-    static Properties prop;
-    static FileInputStream input;
-    public static String testData = "/src/test/java/TestData/TestData.properties";
-
-    private static final File currentDirectory = new File(new File("").getAbsolutePath());
+    private static final String TEST_DATA_RESOURCE = "TestData/TestData.properties";
 
 
     public static String getProperty(String key) {
-        prop = new Properties();
+        Properties prop = new Properties();
 
-        try {
-            input = new FileInputStream(currentDirectory + testData);
+        try (InputStream input = LoadProp.class.getClassLoader().getResourceAsStream(TEST_DATA_RESOURCE)) {
+            if (input == null) {
+                throw new IllegalStateException("Unable to locate property resource: " + TEST_DATA_RESOURCE);
+            }
             prop.load(input);
-            input.close();
         } catch (IOException e) {
-            throw new IllegalStateException("Unable to load property file: " + currentDirectory + testData, e);
+            throw new IllegalStateException("Unable to load property resource: " + TEST_DATA_RESOURCE, e);
         }
         return prop.getProperty(key);
     }

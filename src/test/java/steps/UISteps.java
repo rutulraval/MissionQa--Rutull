@@ -18,7 +18,6 @@ import java.util.Map;
 
 public class UISteps {
 
-    private final HomePage homePage = new HomePage();
     private InventoryPage inventoryPage;
     private CartPage cartPage;
     private CheckoutPage checkoutPage;
@@ -30,7 +29,7 @@ public class UISteps {
 
     @Given("I am on the home page")
     public void iAmOnTheHomePage() {
-        homePage.open();
+        new HomePage().open();
     }
 
 
@@ -87,7 +86,7 @@ public class UISteps {
         for (List<String> row : rows) {
             itemNames.add(row.get(0).trim());
         }
-        inventoryPage.removeItemsByDisplayNames(cartPage, itemNames);
+        cartPage.removeItemsByDisplayNames(itemNames);
     }
 
     
@@ -110,8 +109,7 @@ public class UISteps {
 
     @Given("I click on the CONTINUE button")
     public void iClickOnTheCONTINUEButton() {
-        checkoutPage.fillCheckoutAndContinue(firstName, lastName, postalCode);
-        checkoutOverviewPage = new CheckoutOverviewPage();
+        checkoutOverviewPage = checkoutPage.fillCheckoutAndContinue(firstName, lastName, postalCode);
     }
 
     @And("^I type \\\"([^\\\"]*)\\\" for ZIP/Postal Code$")
