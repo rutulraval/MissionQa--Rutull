@@ -1,3 +1,4 @@
+@ui
 Feature: Checkout items in the basket
   Please use home page of https://www.saucedemo.com/
 
@@ -23,7 +24,6 @@ Feature: Checkout items in the basket
     And I type "FirstName" for First Name
     And I type "LastName" for Last Name
     And I type "EC1A 9JU" for ZIP/Postal Code
-
     When I click on the CONTINUE button
     Then Item total will be equal to the total of items on the list
     And a Tax rate of 8 % is applied to the total

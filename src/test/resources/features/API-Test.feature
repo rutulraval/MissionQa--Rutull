@@ -1,8 +1,12 @@
+@api
 Feature: API test
 # Please visit https://reqres.in/
 
+  Background:
+    Given I open the API endpoint
+
   Scenario: Should see LIST USERS of all existing users
-    Given I get the default list of users for on 1st page
+    Given I get the default list of users for page 1
     When I get the list of all users within every page
     Then I should see total users count equals the number of user ids
 
@@ -31,7 +35,7 @@ Feature: API test
 
 
   Scenario: LOGIN - SUCCESSFUL by a user
-    Given I login unsuccessfully with the following data
+    Given I login successfully with the following data
       | Email              | Password   |
       | eve.holt@reqres.in | cityslicka |
     Then I should get a response code of 200
